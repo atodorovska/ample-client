@@ -1,1 +1,1 @@
-Platform for sharing and renting of clothing - client application.
+Platform for sharing and renting of clothing.
