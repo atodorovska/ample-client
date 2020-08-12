@@ -14,8 +14,9 @@ const Navigation = (props: any) => {
         if(context.isActiveUserPresent) {
            return(
                <Nav>
-                   <Navbar.Text>Signed in as: <a
-                       href="/profile">{context.activeUser?.username}</a></Navbar.Text>
+                   <Navbar.Text>Signed in as:
+                       <a href="/profile">{context.activeUser?.username}</a>
+                   </Navbar.Text>
                    <Nav.Link onClick={context.activeUserLogout}>Sign out</Nav.Link>
                </Nav>
            )

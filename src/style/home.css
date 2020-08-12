@@ -1,3 +1,111 @@
+/*
+    colors:
+        red: #e62739,                   (230,39,57)
+        green: #6ed3cf,                 (110,211,207)
+        purple: #9068be,                (144,104,190)
+        grey: #e1e8f0,                  (225,232,240)
+        dark grey (black): #343a40      (52,58,64)
+*/
+
+
+.color-red{
+    color: #e62739;
+}
+
+.color-green{
+    color: #6ed3cf;
+}
+
+.color-purple{
+    color: #9068be;
+}
+
 .banner{
-    opacity: 0.4;
+    opacity: 0.3;
+}
+
+.banner-button{
+    background-color: #e62739;
+    border-color: #e62739;
+    position: absolute;
+    top: 28.5rem;
+    right: 19rem;
+    opacity: 0.9;
+    width: 20rem;
+}
+
+.banner-button:hover{
+    background-color: #e62739;
+    border-color: #e62739;
+    opacity: 1;
+}
+
+.banner-logo{
+    position: absolute;
+    top: 21rem;
+    left: 20rem;
+    border-bottom: 2px #e62739 solid;
+}
+
+.text-banner{
+    height: 20rem;
+}
+
+.text-banner-black{
+    background-color: #343a40;
+}
+
+.title{
+    font-size: 1.5rem;
+}
+
+.small-title{
+    font-size: 1.1rem;
+}
+
+.text-explain-banner{
+    height: 2.5rem;
+    font-size: 1.5rem;
+    color: black;
+}
+
+.text-explain-banner-red{
+    background-color: #e62739;
+}
+
+.text-explain-banner-green{
+    background-color: #6ed3cf;
+}
+
+.text-explain-banner-purple{
+    background-color: #9068be;
+}
+
+.text-explain-banner-black{
+    background-color: #343a40;
+}
+
+.site-map{
+    height: 20rem;
+    background-color: #343a40;
+}
+
+.custom-link{
+    opacity: 0.9;
+}
+
+.custom-link:hover{
+    opacity: 1;
+}
+
+.custom-link-text{
+    color: black;
+    text-decoration: none;
+    opacity: 0.9;
+}
+
+.custom-link-text:hover{
+    color: black;
+    text-decoration: none;
+    opacity: 1;
 }

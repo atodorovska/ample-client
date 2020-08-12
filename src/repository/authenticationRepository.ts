@@ -22,6 +22,14 @@ class AuthenticationRepository {
         return axios.post("/logout");
     }
 
+    getLatestClothingItems() {
+        return axios.get("/clothing/latest");
+    }
+
+    getClothingItemImage(image: string) {
+        return axios.get(`/clothing/item/${image}`);
+    }
+
 }
 
 export default new AuthenticationRepository();

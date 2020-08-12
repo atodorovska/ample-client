@@ -1,5 +1,7 @@
 import React, {Component, useState} from "react";
 import banner from '../assets/images/new.jpg';
+import giving from '../assets/images/giving.jpg';
+import bannerLogo from '../assets/images/banner-logo.png';
 import search from '../assets/images/search_white.png';
 import discount from '../assets/images/discount_white.png';
 import share from '../assets/images/share_white.png';
@@ -15,6 +17,10 @@ import Button from "react-bootstrap/Button";
 import SignIn from "./signIn";
 import Register from "./register";
 import MyContext from "../context-store/myContext";
+import MostRecentItems from "./mostRecentItems";
+import MostRecentDiscounts from "./mostRecentDiscounts";
+import SiteMap from "./siteMap";
+import ShareItem from "./shareItem";
 
 class Home extends Component {
 
@@ -25,13 +31,16 @@ class Home extends Component {
     render() {
         return (
            <MyContext.Consumer>
-               {context => (
+               {(context: any) => (
                    <>
                        <Nav />
                        <SignIn />
                        <Register />
-                       <Image className="banner" src={banner} fluid/>
-                       <Container className="mt-xl-5" fluid>
+                       <ShareItem />
+                       <Image className="banner" src={banner} fluid />
+                       <Image className="banner-logo" src={bannerLogo}/>
+                       <Button className="banner-button" href="#learn" variant="dark" size="lg">How to start sharing?</Button>{' '}
+                       <Container className="mt-xl-4 mh-50 col-xl-11" fluid>
                            <Row>
                                <Col className="col-xl-4 text-center">
                                    <Image src={search}/>
@@ -43,62 +52,65 @@ class Home extends Component {
                                    <Image src={discount}/>
                                </Col>
                            </Row>
-                           <Row className="mt-3">
+                           <Row className="mt-xl-2">
                                <Col className="col-xl-4 text-center">
                                    <Button href="/shared-items" variant="dark" size="lg">See shared items</Button>{' '}
                                </Col>
                                <Col className="col-xl-4 text-center">
-                                   <Button variant="dark" size="lg">Start sharing</Button>{''}
+                                   <Button variant="dark" size="lg" onClick={context.setModalShareItemShow}>Start sharing</Button>{''}
                                </Col>
                                <Col className="col-xl-4 text-center">
                                    <Button href="/discounts" variant="dark" size="lg">Get discount</Button>{' '}
                                </Col>
                            </Row>
                        </Container>
-                       <Container className="mt-xl-5" fluid>
-                           <CardDeck>
-                               <Card>
-                                   <Card.Img variant="top" src={banner}/>
+                       <Container id="learn" className="mt-xl-5 text-banner text-banner-black" style={{display: 'flex', justifyContent: 'center'}} fluid>
+                           <CardDeck className="col-xl-11">
+                               <Card className="col-xl-6 mt-xl-5 mb-xl-5 text-black">
                                    <Card.Body>
-                                       <Card.Title>Card title</Card.Title>
+                                       <Card.Title className="title color-purple">Why should I give clothing away?</Card.Title>
                                        <Card.Text>
-                                           This is a wider card with supporting text below as a natural lead-in to
-                                           additional content. This content is a little bit longer.
+                                           The fashion industry is the second largest polluter worldwide.
+                                           To help solve this problem, clothing should be reused as much as possible.
+                                           Giving clothing away helps the environment, while also helping people who can not afford
+                                           to buy new clothing. Our platform offers an easy way to give away some of you unused clothing,
+                                           so that you can help other people and the environment. Additionally, for every donation you make,
+                                           you get points, which can be used on the platform.{' '}
                                        </Card.Text>
                                    </Card.Body>
-                                   <Card.Footer>
-                                       <small className="text-muted">Last updated 3 mins ago</small>
-                                   </Card.Footer>
                                </Card>
-                               <Card>
-                                   <Card.Img variant="top" src="holder.js/100px160"/>
+                               <Card className="col-xl-3 mb-xl-5 mt-xl-5">
                                    <Card.Body>
-                                       <Card.Title>Card title</Card.Title>
+                                       <Card.Title className="title color-green">How to give clothing away?</Card.Title>
                                        <Card.Text>
-                                           This card has supporting text below as a natural lead-in to additional
-                                           content.{' '}
+                                           Click on the 'start sharing' button and fill out the form. Make sure that the time and address you
+                                           enter are correct and that's it! Our team will pick up the package from your home and bring it to someone who
+                                           needs it. As easy as that! Try it out now!{' '}
                                        </Card.Text>
                                    </Card.Body>
-                                   <Card.Footer>
-                                       <small className="text-muted">Last updated 3 mins ago</small>
-                                   </Card.Footer>
                                </Card>
-                               <Card>
-                                   <Card.Img variant="top" src="holder.js/100px160"/>
+                               <Card className="col-xl-3 mb-xl-5 mt-xl-5">
                                    <Card.Body>
-                                       <Card.Title>Card title</Card.Title>
+                                       <Card.Title className="title color-green">How to use my points?</Card.Title>
                                        <Card.Text>
-                                           This is a wider card with supporting text below as a natural lead-in to
-                                           additional content. This card has even longer content than the first to
-                                           show that equal height action.
+                                           All of your points can be used on the platform, as a currency that gets you discount in the stores of the brands
+                                           we collaborate with. Go to the Discounts page, or click on the 'get discount' button to see all the available discount coupons.
+                                           Click on the coupon you want - and that's it!{' '}
                                        </Card.Text>
                                    </Card.Body>
-                                   <Card.Footer>
-                                       <small className="text-muted">Last updated 3 mins ago</small>
-                                   </Card.Footer>
                                </Card>
                            </CardDeck>
                        </Container>
+                       <Container className="text-explain-banner text-center lead" fluid>
+                           <div className="mt-xl-5">See most recently shared items</div>
+                       </Container>
+                       <MostRecentItems/>
+                       <hr className="col-xl-11 mt-xl-5"/>
+                       <Container className="text-explain-banner text-center lead title-green" fluid>
+                           <div className="mt-xl-5">See most recently added discounts</div>
+                       </Container>
+                       <MostRecentDiscounts/>
+                       <SiteMap/>
                    </>
                )}
            </MyContext.Consumer>
