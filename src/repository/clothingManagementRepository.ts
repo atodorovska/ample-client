@@ -2,6 +2,13 @@ import axios from '../custom-axios/ample-axios';
 
 class ClothingManagementRepository {
 
+    allClothingItems(current: number, items: number) {
+        return axios.post("/clothing/all", {
+            "current" : current,
+            "items" : items
+        });
+    }
+
     getLatestClothingItems() {
         return axios.get("/clothing/latest");
     }

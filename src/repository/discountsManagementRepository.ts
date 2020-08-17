@@ -2,6 +2,13 @@ import axios from '../custom-axios/ample-axios';
 
 class DiscountsManagementRepository {
 
+    allDiscounts(current: number, items: number) {
+        return axios.post("/discounts/all", {
+            "current" : current,
+            "items" : items
+        });
+    }
+
     getLatestDiscounts() {
         return axios.get("/discounts/latest");
     }

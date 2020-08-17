@@ -18,8 +18,10 @@ import Register from "./register";
 import MyContext from "../context-store/myContext";
 import MostRecentItems from "./mostRecentItems";
 import MostRecentDiscounts from "./mostRecentDiscounts";
-import SiteMap from "./siteMap";
 import ShareItem from "./shareItem";
+import ListGroup from "react-bootstrap/ListGroup";
+import profileManagementRepository from "../repository/profileManagementRepository";
+import authenticationRepository from "../repository/authenticationRepository";
 
 interface IState {
     showSuccessModal: boolean
@@ -37,6 +39,7 @@ class Home extends Component<any, IState>{
         }
         this.setSuccessModalShow = this.setSuccessModalShow.bind(this);
         this.setSuccessModalHide = this.setSuccessModalHide.bind(this);
+        this.addPointsForSurvey = this.addPointsForSurvey.bind(this);
     }
 
     componentDidMount() {
@@ -55,6 +58,29 @@ class Home extends Component<any, IState>{
         })
     }
 
+    addPointsForSurvey() {
+        authenticationRepository.getActiveUser().then(
+            (response: any) => {
+                profileManagementRepository.addPointsForSurvey(response.data.username);
+            }
+        )
+    }
+
+    conditionalCardLink() {
+        if(this.context.isActiveUserPresent)
+            return (
+                <Card.Text>
+                    <a className="custom-link-text link" href="https://forms.gle/RidfMwBBpYQt3AEm7"
+                       onClick={this.addPointsForSurvey}>Fill out our survey here and gain more points!</a>
+                </Card.Text>
+            );
+        else return (
+                <Card.Text>
+                    <a className="custom-link-text link"
+                       onClick={this.context.setModalSignInShow}>Fill out our survey here and gain more points!</a>
+                </Card.Text>
+        )
+    }
 
     conditionalRendering() {
         if(this.context.isActiveUserPresent)
@@ -116,7 +142,7 @@ class Home extends Component<any, IState>{
                        </Container>
                        <Container id="learn" className="mt-xl-5 text-banner background-black" style={{display: 'flex', justifyContent: 'center'}} fluid>
                            <CardDeck className="col-xl-11">
-                               <Card className="col-xl-6 mt-xl-5 mb-xl-5 text-black">
+                               <Card className="col-xl-6 mt-xl-5 mb-xl-5 text-black background-white">
                                    <Card.Body>
                                        <Card.Title className="title color-purple">Why should I give clothing away?</Card.Title>
                                        <Card.Text>
@@ -129,7 +155,7 @@ class Home extends Component<any, IState>{
                                        </Card.Text>
                                    </Card.Body>
                                </Card>
-                               <Card className="col-xl-3 mb-xl-5 mt-xl-5">
+                               <Card className="col-xl-3 mb-xl-5 mt-xl-5 background-white">
                                    <Card.Body>
                                        <Card.Title className="title color-green">How to give clothing away?</Card.Title>
                                        <Card.Text>
@@ -139,7 +165,7 @@ class Home extends Component<any, IState>{
                                        </Card.Text>
                                    </Card.Body>
                                </Card>
-                               <Card className="col-xl-3 mb-xl-5 mt-xl-5">
+                               <Card className="col-xl-3 mb-xl-5 mt-xl-5 background-white">
                                    <Card.Body>
                                        <Card.Title className="title color-green">How to use my points?</Card.Title>
                                        <Card.Text>
@@ -160,7 +186,46 @@ class Home extends Component<any, IState>{
                            <div className="mt-xl-5">See most recently added discounts</div>
                        </Container>
                        <MostRecentDiscounts/>
-                       <SiteMap/>
+                       <Container className="site-map background-black mt-xl-5" style={{display: 'flex', justifyContent: 'center'}} fluid>
+                           <CardDeck className="col-xl-11">
+                               <Card className="col-xl-5 mt-xl-5 mb-xl-5 text-black background-white">
+                                   <Card.Body>
+                                       <Card.Title className="title color-purple">What is next?</Card.Title>
+                                       <Card.Text>
+                                           Our company is looking into expanding the platform. We want to implement a module for renting
+                                           clothing on our platform. That would mean that there would be more expensive, clothing for special occasions
+                                           available for renting. The clothing would be delivered through our network and cleaned as a part of the
+                                           service we provide. {' '}
+                                       </Card.Text>
+                                   </Card.Body>
+                               </Card>
+                               <Card className="col-xl-4 mb-xl-5 mt-xl-5 background-white">
+                                   <Card.Body>
+                                       <Card.Title className="title color-green">What do you think of our idea?</Card.Title>
+                                       <Card.Text>
+                                           Fill out the survey to help us gain information regarding the idea of expansion. When you fill
+                                           out the survey, we will add more points to your profile. Make note that only one survey is
+                                           acceptable by user.{' '}
+                                       </Card.Text>
+                                       {this.conditionalCardLink()}
+                                   </Card.Body>
+                               </Card>
+                               <Card className="col-xl-3 mb-xl-5 mt-xl-5 background-white">
+                                   <Card.Body>
+                                       <Card.Title className="title color-green">Contact us!</Card.Title>
+                                       <Card.Text>
+                                           <div className="color-purple small-title">Email</div>
+                                           <div>amplecompany2020@gmail.com</div>
+                                       </Card.Text>
+                                       <Card.Text>
+                                           <div className="color-purple small-title">Phone</div>
+                                           <div>+38972303644</div>
+                                       </Card.Text>
+
+                                   </Card.Body>
+                               </Card>
+                           </CardDeck>
+                       </Container>
                    </>
                )}
            </MyContext.Consumer>

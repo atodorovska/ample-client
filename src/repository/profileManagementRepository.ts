@@ -9,6 +9,10 @@ class ProfileManagementRepository {
             "username" : username
         })
     }
+
+    addPointsForSurvey(username: string) {
+        return axios.get(`/user/add-points/${username}`);
+    }
 }
 
 export default new ProfileManagementRepository();
