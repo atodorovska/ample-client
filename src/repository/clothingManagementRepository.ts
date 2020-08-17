@@ -6,14 +6,33 @@ class ClothingManagementRepository {
         return axios.get("/clothing/latest");
     }
 
-    shareClothingItem(name: string, description: string, category: string, size: string, price: number, photo: string) {
-        return axios.post("/clothing/item/post", {
+    getClothingItemDetails(id: number) {
+        return axios.get(`/clothing/${id}`);
+    }
+
+    getClothingItem(address: string, date: string, number: string, username: string, item: number){
+        return axios.post("/clothing/item/get", {
+            "address": address,
+            "date": date,
+            "number": number,
+            "username": username,
+            "item": item
+        });
+    }
+
+    shareClothingItem(name: string, description: string, category: string, size: string, price: number, photo: string,
+                      address: string, date: string, number: string, username: string) {
+        return axios.post("/clothing/item/share", {
             "name": name,
             "description": description,
             "category": category,
             "size": size,
             "price": price,
-            "photo": photo
+            "photo": photo,
+            "address": address,
+            "date": date,
+            "number": number,
+            "username": username
         });
     }
 

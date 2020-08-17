@@ -1,5 +1,5 @@
 import React,  {useContext} from "react";
-import '../style/navbar.css';
+import '../style/global.css';
 import logo from '../assets/images/logo_big_black.png';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
@@ -13,18 +13,32 @@ const Navigation = (props: any) => {
     const conditionalRender = () => {
         if(context.isActiveUserPresent) {
            return(
-               <Nav>
-                   <Navbar.Text>Signed in as:
-                       <a href="/profile">{context.activeUser?.username}</a>
-                   </Navbar.Text>
-                   <Nav.Link onClick={context.activeUserLogout}>Sign out</Nav.Link>
-               </Nav>
+               <>
+                   <Navbar.Collapse className="justify-content-end">
+                       <Nav className="mr-auto">
+                           <Nav.Link href="/shared-items">Shared Items</Nav.Link>
+                           <Nav.Link href="/discounts">Discounts</Nav.Link>
+                       </Nav>
+                       <Nav>
+                           <Navbar.Text><span className="mr-xl-1">Signed in as</span>
+                               <a href="/profile">{context.activeUser?.username}</a>
+                           </Navbar.Text>
+                           <Nav.Link onClick={context.activeUserLogout}>Sign out</Nav.Link>
+                       </Nav>
+                   </Navbar.Collapse>
+               </>
            )
         }else {
            return(
-               <Nav>
-                   <Nav.Link onClick={context.setModalSignInShow}>Sign in</Nav.Link>
-               </Nav>
+               <Navbar.Collapse className="justify-content-end">
+                   <Nav className="mr-auto">
+                       <Nav.Link onClick={context.setModalSignInShow}>Shared Items</Nav.Link>
+                       <Nav.Link onClick={context.setModalSignInShow}>Discounts</Nav.Link>
+                   </Nav>
+                   <Nav>
+                       <Nav.Link onClick={context.setModalSignInShow}>Sign in</Nav.Link>
+                   </Nav>
+               </Navbar.Collapse>
            )
         }
     }
@@ -39,15 +53,7 @@ const Navigation = (props: any) => {
                                 <img src={logo} className="d-inline-block align-top" alt="Ample Logo"/>
                             </Navbar.Brand>
                             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                            <Navbar.Collapse className="justify-content-end">
-                                <Nav className="mr-auto">
-                                    <Nav.Link href="/shared-items">Shared Items</Nav.Link>
-                                    <Nav.Link href="/discounts">Discounts</Nav.Link>
-                                </Nav>
-                                <>
-                                    {conditionalRender()}
-                                </>
-                            </Navbar.Collapse>
+                            {conditionalRender()}
                         </Navbar>
                     </Container>
                 )}

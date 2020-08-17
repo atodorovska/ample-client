@@ -1,5 +1,5 @@
 import React, {Component, useContext, useState} from "react";
-import '../style/signin.css';
+import '../style/global.css';
 import google from '../assets/images/google.png';
 import fb from '../assets/images/fb_1.png';
 import Modal from 'react-bootstrap/Modal';

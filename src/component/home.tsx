@@ -1,12 +1,11 @@
 import React, {Component, useState} from "react";
 import banner from '../assets/images/new.jpg';
-import giving from '../assets/images/giving.jpg';
 import bannerLogo from '../assets/images/banner-logo.png';
 import search from '../assets/images/search_white.png';
 import discount from '../assets/images/discount_white.png';
 import share from '../assets/images/share_white.png';
 import Nav from "./navigation";
-import '../style/home.css';
+import '../style/global.css';
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
 import Card from "react-bootstrap/Card";
@@ -22,10 +21,69 @@ import MostRecentDiscounts from "./mostRecentDiscounts";
 import SiteMap from "./siteMap";
 import ShareItem from "./shareItem";
 
-class Home extends Component {
+interface IState {
+    showSuccessModal: boolean
+}
+
+class Home extends Component<any, IState>{
+
+    static contextType = MyContext;
 
     constructor(props: any) {
         super(props);
+
+        this.state = {
+            showSuccessModal: false
+        }
+        this.setSuccessModalShow = this.setSuccessModalShow.bind(this);
+        this.setSuccessModalHide = this.setSuccessModalHide.bind(this);
+    }
+
+    componentDidMount() {
+        this.context.setErrorFalse();
+    }
+
+    setSuccessModalShow() {
+        this.setState({
+            showSuccessModal: true
+        })
+    }
+
+    setSuccessModalHide() {
+        this.setState({
+            showSuccessModal: false
+        })
+    }
+
+
+    conditionalRendering() {
+        if(this.context.isActiveUserPresent)
+            return(
+               <>
+                   <Col className="col-xl-4 text-center">
+                       <Button href="/shared-items" variant="dark" size="lg">See shared items</Button>{' '}
+                   </Col>
+                   <Col className="col-xl-4 text-center">
+                       <Button variant="dark" size="lg" onClick={this.context.setModalShareItemShow}>Start sharing</Button>{''}
+                   </Col>
+                   <Col className="col-xl-4 text-center">
+                       <Button href="/discounts" variant="dark" size="lg">Get discount</Button>{' '}
+                   </Col>
+               </>
+            );
+        else return (
+            <>
+                <Col className="col-xl-4 text-center">
+                    <Button onClick={this.context.setModalSignInShow} variant="dark" size="lg">See shared items</Button>{' '}
+                </Col>
+                <Col className="col-xl-4 text-center">
+                    <Button variant="dark" size="lg" onClick={this.context.setModalSignInShow}>Start sharing</Button>{''}
+                </Col>
+                <Col className="col-xl-4 text-center">
+                    <Button onClick={this.context.setModalSignInShow} variant="dark" size="lg">Get discount</Button>{' '}
+                </Col>
+            </>
+        )
     }
 
     render() {
@@ -36,7 +94,7 @@ class Home extends Component {
                        <Nav />
                        <SignIn />
                        <Register />
-                       <ShareItem />
+                       <ShareItem showSuccessModal={this.state.showSuccessModal} setSuccessModalShow={this.setSuccessModalShow} setSuccessModalHide={this.setSuccessModalHide}/>
                        <Image className="banner" src={banner} fluid />
                        <Image className="banner-logo" src={bannerLogo}/>
                        <Button className="banner-button" href="#learn" variant="dark" size="lg">How to start sharing?</Button>{' '}
@@ -53,18 +111,10 @@ class Home extends Component {
                                </Col>
                            </Row>
                            <Row className="mt-xl-2">
-                               <Col className="col-xl-4 text-center">
-                                   <Button href="/shared-items" variant="dark" size="lg">See shared items</Button>{' '}
-                               </Col>
-                               <Col className="col-xl-4 text-center">
-                                   <Button variant="dark" size="lg" onClick={context.setModalShareItemShow}>Start sharing</Button>{''}
-                               </Col>
-                               <Col className="col-xl-4 text-center">
-                                   <Button href="/discounts" variant="dark" size="lg">Get discount</Button>{' '}
-                               </Col>
+                               {this.conditionalRendering()}
                            </Row>
                        </Container>
-                       <Container id="learn" className="mt-xl-5 text-banner text-banner-black" style={{display: 'flex', justifyContent: 'center'}} fluid>
+                       <Container id="learn" className="mt-xl-5 text-banner background-black" style={{display: 'flex', justifyContent: 'center'}} fluid>
                            <CardDeck className="col-xl-11">
                                <Card className="col-xl-6 mt-xl-5 mb-xl-5 text-black">
                                    <Card.Body>
@@ -106,7 +156,7 @@ class Home extends Component {
                        </Container>
                        <MostRecentItems/>
                        <hr className="col-xl-11 mt-xl-5"/>
-                       <Container className="text-explain-banner text-center lead title-green" fluid>
+                       <Container className="text-explain-banner text-center lead" fluid>
                            <div className="mt-xl-5">See most recently added discounts</div>
                        </Container>
                        <MostRecentDiscounts/>

@@ -3,20 +3,21 @@ import React, {Component} from "react";
 import ActiveUser from "../domain/activeUser";
 import authenticationRepository from "../repository/authenticationRepository";
 import MyContext from "./myContext";
-import ClothingItem from "../domain/ClothingItem";
 import clothingManagementRepository from "../repository/clothingManagementRepository";
-import BrandDiscount from "../domain/BrandDiscount";
 import discountsManagementRepository from "../repository/discountsManagementRepository";
+// @ts-ignore
+import ClothingItem from "../domain/clothingItem";
+import BrandDiscount from "../domain/brandDiscount";
 
 interface IState {
-    history: any,
     modalSignIn: boolean,
     modalRegister: boolean,
     activeUser: ActiveUser,
     isActiveUserPresent: boolean,
     latestClothingItems: ClothingItem [],
     latestDiscounts: BrandDiscount [],
-    modalShareItem: boolean
+    modalShareItem: boolean,
+    error: boolean
 }
 
 class MyProvider extends Component<any, IState> {
@@ -25,14 +26,14 @@ class MyProvider extends Component<any, IState> {
         super(props);
 
         this.state = {
-            history: this.props.history,
             modalSignIn: false,
             modalRegister: false,
             activeUser: {} as ActiveUser,
             isActiveUserPresent: false,
             latestClothingItems: [],
             latestDiscounts: [],
-            modalShareItem: false
+            modalShareItem: false,
+            error: false
         };
     }
 
@@ -40,7 +41,6 @@ class MyProvider extends Component<any, IState> {
         return (
             <MyContext.Provider
                 value={{
-                    history: this.state.history,
                     modalSignIn: this.state.modalSignIn,
                     modalRegister: this.state.modalRegister,
                     activeUser: this.state.activeUser,
@@ -48,6 +48,7 @@ class MyProvider extends Component<any, IState> {
                     latestClothingItems: this.state.latestClothingItems,
                     latestDiscounts: this.state.latestDiscounts,
                     modalShareItem: this.state.modalShareItem,
+                    error: this.state.error,
                     setModalSignInShow: () => {
                         this.setState(
                             {modalSignIn: true}
@@ -76,6 +77,16 @@ class MyProvider extends Component<any, IState> {
                     setModalRegisterHide: () => {
                         this.setState(
                             {modalRegister: false}
+                        )
+                    },
+                    setErrorTrue: () => {
+                        this.setState(
+                            {error: true}
+                        )
+                    },
+                    setErrorFalse: () => {
+                        this.setState(
+                            {error: false}
                         )
                     },
                     activeUserLogout: () => {

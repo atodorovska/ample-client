@@ -6,7 +6,29 @@
         grey: #e1e8f0,                  (225,232,240)
         dark grey (black): #343a40      (52,58,64)
 */
+.background-white{
+    background-color: #f2f2f2;
+}
 
+.background-red{
+    background-color: #e62739;
+}
+
+.background-green{
+    background-color: rgba(110, 211, 207, 0.2);
+}
+
+.background-purple{
+    background-color: #9068be;
+}
+
+.background-black{
+    background-color: #343a40;
+}
+
+.background-black-light{
+    background-color: rgba(52, 58, 64, 0.1);
+}
 
 .color-red{
     color: #e62739;
@@ -20,6 +42,32 @@
     color: #9068be;
 }
 
+.item-details-image{
+    height: 51rem;
+}
+
+.discount-details-image{
+    height: 35rem;
+}
+
+.red-button{
+    background-color: #e62739;
+    border-color: #e62739;
+    opacity: 0.9;
+}
+
+.red-button:hover{
+    background-color: #e62739;
+    border-color: #e62739;
+    opacity: 1;
+}
+
+.red-button:active{
+    background-color: #e62739;
+    border-color: #e62739;
+    opacity: 1;
+}
+
 .banner{
     opacity: 0.3;
 }
@@ -29,7 +77,7 @@
     border-color: #e62739;
     position: absolute;
     top: 28.5rem;
-    right: 19rem;
+    left: 77rem;
     opacity: 0.9;
     width: 20rem;
 }
@@ -51,10 +99,6 @@
     height: 20rem;
 }
 
-.text-banner-black{
-    background-color: #343a40;
-}
-
 .title{
     font-size: 1.5rem;
 }
@@ -63,26 +107,14 @@
     font-size: 1.1rem;
 }
 
+.medium-title{
+    font-size: 1.3rem;
+}
+
 .text-explain-banner{
     height: 2.5rem;
     font-size: 1.5rem;
     color: black;
-}
-
-.text-explain-banner-red{
-    background-color: #e62739;
-}
-
-.text-explain-banner-green{
-    background-color: #6ed3cf;
-}
-
-.text-explain-banner-purple{
-    background-color: #9068be;
-}
-
-.text-explain-banner-black{
-    background-color: #343a40;
 }
 
 .site-map{
@@ -108,4 +140,39 @@
     color: black;
     text-decoration: none;
     opacity: 1;
+}
+
+.nav-color{
+    background-color: #f2f2f2;
+}
+
+.link{
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.link:hover{
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.error {
+    color: red;
+    font-size: 1rem;
+}
+
+.text-bold{
+    font-weight: bold;
+}
+
+.list-title-height{
+    height: 5rem;
+}
+
+.profile-list-item{
+    width: 60rem;
+}
+
+.profile-list-button{
+    display: inline;
 }

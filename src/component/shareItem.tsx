@@ -1,5 +1,5 @@
 import React, {Component, useContext, useState} from "react";
-import '../style/signin.css';
+import '../style/global.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -8,7 +8,7 @@ import clothingManagementRepository from "../repository/clothingManagementReposi
 
 const ShareItem = (props:any) => {
 
-    const [formData, updateFormData] = React.useState({name: "", description: "", category:"", size:"", price: 0});
+    const [formData, updateFormData] = React.useState({name: "", description: "", category:"", size:"", price: 0, address:"", date:"", number:""});
     const [fileData, updateFileData] = React.useState({photo: "", file: {}});
     const context:any = useContext(MyContext);
 
@@ -36,16 +36,134 @@ const ShareItem = (props:any) => {
         const price = formData.price;
         const file = fileData.file;
         const photo = fileData.photo;
+        const address = formData.address;
+        const date = formData.date;
+        const number = formData.number;
+        const username = context.activeUser.username;
 
         const data = new FormData();
         // @ts-ignore
         data.append("file", file);
 
-        clothingManagementRepository.shareClothingItem(name, description, category, size, price, photo)
+        clothingManagementRepository.shareClothingItem(name, description, category, size, price, photo, address, date, number, username)
             .then((response: any) => {
-               context.setModalShareItemHide();
-            }, clothingManagementRepository.shareClothingItemPhoto(data)).catch((error: any) => console.log(error));
+                context.setModalShareItemHide();
+                props.setSuccessModalShow();
+            }, clothingManagementRepository.shareClothingItemPhoto(data))
+            .catch((error: any) => {
+                context.setModalShareItemHide();
+                context.setErrorTrue();
+            });
+    }
 
+    const conditionalFormAddress = () => {
+        if(context.activeUser.address)
+            return  (
+                <Form.Group controlId="formBasicAddress">
+                    <Form.Label>Your address</Form.Label>
+                    <Form.Control plaintext readOnly defaultValue={context.activeUser.address}/>
+                </Form.Group>
+            );
+        else return(
+            <Form.Group controlId="formBasicAddress">
+                <Form.Label>Your address</Form.Label>
+                <Form.Control name="address" type="text" placeholder="Enter your current address"
+                              onChange={handleChange}/>
+            </Form.Group>
+            );
+    }
+
+    const conditionalFormNumber = () => {
+        if(context.activeUser.address)
+            return  (
+                <Form.Group controlId="formBasicContactNumber">
+                    <Form.Label>Your contact phone number</Form.Label>
+                    <Form.Control plaintext readOnly defaultValue={context.activeUser.number}/>
+                </Form.Group>
+            );
+        else return(
+            <Form.Group controlId="formBasicContactNumber">
+                <Form.Label>Your contact phone number</Form.Label>
+                <Form.Control name="number" type="text" placeholder="Enter your contact phone number"
+                              onChange={handleChange}/>
+            </Form.Group>
+        );
+    }
+
+    const conditionalRendering = () => {
+        if(context.isActiveUserPresent)
+            return (
+                <Form onSubmit={onSubmit} className="mr-1 ml-1">
+                    <Form.Group controlId="formBasicName">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control name="name" type="text" placeholder="Enter item name"
+                                      onChange={handleChange}/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicDescription">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control name="description" type="text" placeholder="Enter item description"
+                                      onChange={handleChange}/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicCategory">
+                        <Form.Label>Category</Form.Label>
+                        <Form.Control name="category" as="select" custom onChange={handleChange}>
+                            <option value="0">Choose...</option>
+                            <option value="1">JACKETS</option>
+                            <option value="2">DRESSES</option>
+                            <option value="3">SHIRTS</option>
+                            <option value="4">TOPS</option>
+                            <option value="5">TROUSERS</option>
+                            <option value="6">JEANS</option>
+                            <option value="7">SHORTS</option>
+                            <option value="8">SKIRTS</option>
+                            <option value="9">SHOES</option>
+                            <option value="10">BAGS</option>
+                            <option value="11">SWIMWEAR</option>
+                            <option value="12">ACCESSORIES</option>
+                            <option value="13">SUITS</option>
+                            <option value="14">OTHER</option>
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicSize">
+                        <Form.Label>Size</Form.Label>
+                        <Form.Control name="size" as="select" custom onChange={handleChange}>
+                            <option value="0">Choose...</option>
+                            <option value="1">XS</option>
+                            <option value="2">S</option>
+                            <option value="3">M</option>
+                            <option value="4">L</option>
+                            <option value="5">XL</option>
+                            <option value="6">OTHER</option>
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPrice">
+                        <Form.Label>Price</Form.Label>
+                        <Form.Control name="price" type="text" placeholder="Enter item original price"
+                                      onChange={handleChange}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.File
+                            className="position-relative"
+                            name="file"
+                            label="Photo"
+                            onChange={handleFileChange}
+                            id="validationForm"
+                            feedbackTooltip
+                        />
+                    </Form.Group>
+                    <hr/>
+                    {conditionalFormAddress()}
+                    <Form.Group controlId="formBasicDate">
+                        <Form.Label>Your desired date of item retrieval</Form.Label>
+                        <Form.Control name="date" type="date" placeholder="Enter the date of item retrieval"
+                                      onChange={handleChange}/>
+                    </Form.Group>
+                    {conditionalFormNumber()}
+                    <Form.Group className="text-center">
+                        <Button className="col-12 mt-2" type="submit" variant="dark">Submit</Button>
+                    </Form.Group>
+                </Form>
+            );
     }
 
     return (
@@ -57,68 +175,28 @@ const ShareItem = (props:any) => {
                             <Modal.Title>Share Item</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Form onSubmit={onSubmit} className="mr-1 ml-1" >
-                                <Form.Group controlId="formBasicName">
-                                    <Form.Label>Name</Form.Label>
-                                    <Form.Control name="name" type="text" placeholder="Enter item name"
-                                                  onChange={handleChange}/>
-                                </Form.Group>
-                                <Form.Group controlId="formBasicDescription">
-                                    <Form.Label>Description</Form.Label>
-                                    <Form.Control name="description" type="text" placeholder="Enter item description"
-                                                  onChange={handleChange}/>
-                                </Form.Group>
-                                <Form.Group controlId="formBasicCategory">
-                                    <Form.Label>Category</Form.Label>
-                                    <Form.Control name="category" as="select" custom onChange={handleChange}>
-                                        <option value="0">Choose...</option>
-                                        <option value="1">JACKETS</option>
-                                        <option value="2">DRESSES</option>
-                                        <option value="3">SHIRTS</option>
-                                        <option value="4">TOPS</option>
-                                        <option value="5">TROUSERS</option>
-                                        <option value="6">JEANS</option>
-                                        <option value="7">SHORTS</option>
-                                        <option value="8">SKIRTS</option>
-                                        <option value="9">SHOES</option>
-                                        <option value="10">BAGS</option>
-                                        <option value="11">SWIMWEAR</option>
-                                        <option value="12">ACCESSORIES</option>
-                                        <option value="13">SUITS</option>
-                                        <option value="14">OTHER</option>
-                                    </Form.Control>
-                                </Form.Group>
-                                <Form.Group controlId="formBasicSize">
-                                    <Form.Label>Size</Form.Label>
-                                    <Form.Control name="size" as="select" custom onChange={handleChange}>
-                                        <option value="0">Choose...</option>
-                                        <option value="1">XS</option>
-                                        <option value="2">S</option>
-                                        <option value="3">M</option>
-                                        <option value="4">L</option>
-                                        <option value="5">XL</option>
-                                        <option value="6">OTHER</option>
-                                    </Form.Control>
-                                </Form.Group>
-                                <Form.Group controlId="formBasicPrice">
-                                    <Form.Label>Price</Form.Label>
-                                    <Form.Control name="price" type="text" placeholder="Enter item original price"
-                                                  onChange={handleChange}/>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.File
-                                        className="position-relative"
-                                        name="file"
-                                        label="Photo"
-                                        onChange={handleFileChange}
-                                        id="validationForm"
-                                        feedbackTooltip
-                                    />
-                                </Form.Group>
-                                <Form.Group className="text-center">
-                                    <Button className="col-12 mt-2" type="submit" variant="dark">Submit</Button>
-                                </Form.Group>
-                            </Form>
+                            {conditionalRendering()}
+                        </Modal.Body>
+                    </Modal>
+                    <Modal show={props.showSuccessModal} onHide={props.setSuccessModalHide} aria-labelledby="contained-modal-title-vcenter" centered>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Success message</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className="small-title">
+                                You have successfully shared your clothing item. It will be retrieved from you on the selected date.
+                                We will contact you to make sure you are at the address provided.
+                            </div>
+                        </Modal.Body>
+                    </Modal>
+                    <Modal show={context.error} onHide={context.setErrorFalse} aria-labelledby="contained-modal-title-vcenter" centered>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Error message</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className="small-title">
+                                An error occurred. You did not successfully share your clothing item. Try again!
+                            </div>
                         </Modal.Body>
                     </Modal>
                 </>
