@@ -40,13 +40,6 @@ class DiscountDetails extends Component<any, IState>{
     }
 
     componentDidMount() {
-        discountsManagementRepository.getDiscountDetails(this.props.match.params.id)
-            .then((response: any) => {
-                this.setState({
-                    discount: response.data
-                })
-            });
-
         authenticationRepository.getActiveUser()
             .then((response: any) => {
                 this.setState({
@@ -59,7 +52,14 @@ class DiscountDetails extends Component<any, IState>{
                             previousUserPoints: response.data
                         })
                     });
-            })
+            });
+
+        discountsManagementRepository.getDiscountDetails(this.props.match.params.id)
+            .then((response: any) => {
+                this.setState({
+                    discount: response.data
+                })
+            });
     }
 
     conditionalGetDiscount() {
@@ -127,7 +127,7 @@ class DiscountDetails extends Component<any, IState>{
     }
 
     conditionalRendering() {
-        if(this.context.isActiveUserPresent){
+        if(this.state.userName !== ""){
             return (
                 <>
                     <Nav/>

@@ -157,6 +157,10 @@
     background-color: #e62739;
 }
 
+.background-red-light{
+    background-color: rgba(230, 39, 57, 0.9)
+}
+
 .background-green{
     background-color: rgba(110, 211, 207, 0.2);
 }
@@ -170,7 +174,7 @@
 }
 
 .background-black-light{
-    background-color: rgba(52, 58, 64, 0.1);
+    background-color: rgba(52, 58, 64, 0.8);
 }
 
 .color-red{
@@ -185,12 +189,16 @@
     color: #9068be;
 }
 
+.color-white{
+    color: #f2f2f2;
+}
+
 .item-details-image{
     height: 51rem;
 }
 
 .filter-height{
-    height: 30rem;
+    height: 43.5rem;
 }
 
 .pagination > li > a
@@ -201,7 +209,7 @@
 }
 
 .pagination .active{
-    color: white;
+    color: #f2f2f2;
     background-color: #e62739;
     border-color: #e62739;
 }
@@ -216,7 +224,7 @@
 .pagination > li > span:active,
 .pagination > li > span:checked
 {
-    color: white;
+    color: #f2f2f2;
     background-color: #e62739;
     border-color: #e62739;
 }

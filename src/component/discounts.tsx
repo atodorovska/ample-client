@@ -2,25 +2,32 @@ import React, {Component, useContext} from "react";
 import Nav from "./navigation";
 import MyContext from "../context-store/myContext";
 import Home from "./home";
-import clothingManagementRepository from "../repository/clothingManagementRepository";
 import Pagination from "react-bootstrap/Pagination";
-import ClothingItem from "../domain/clothingItem";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import BrandDiscount from "../domain/brandDiscount";
 import discountsManagementRepository from "../repository/discountsManagementRepository";
+import authenticationRepository from "../repository/authenticationRepository";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import ClothingItem from "../domain/clothingItem";
+import clothingManagementRepository from "../repository/clothingManagementRepository";
 
 // change value when needed
 const NUM_PAGES = 7;
-const NUM_ITEMS = 8;
+const NUM_ITEMS = 12;
 
 interface IState {
     pages: number,
     current: number,
     items: number,
-    currentItems: BrandDiscount[]
+    currentItems: BrandDiscount[],
+    username: string,
+    formValues: {
+        name: string;
+    }
 }
 
 class Discounts extends Component<any, IState>{
@@ -34,8 +41,13 @@ class Discounts extends Component<any, IState>{
             pages: NUM_PAGES,
             current: 1,
             items: NUM_ITEMS,
-            currentItems: []
+            currentItems: [],
+            username: "",
+            formValues: {name: ""}
         }
+
+        this.handleChange= this.handleChange.bind(this);
+        this.resetFilters= this.resetFilters.bind(this);
     }
 
     render() {
@@ -47,12 +59,28 @@ class Discounts extends Component<any, IState>{
     }
 
     componentDidMount() {
-        discountsManagementRepository.allDiscounts(this.state.current, this.state.items)
+        authenticationRepository.getActiveUser()
+            .then((response: any) => {
+                this.setState({
+                    username: response.data.username
+                })
+            });
+
+        discountsManagementRepository.allDiscounts(this.state.formValues.name, this.state.current, this.state.items)
             .then((response:any) => {
                 this.setState({
                     currentItems: response.data
                 })
-            })
+            });
+    }
+
+    componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<IState>, snapshot?: any) {
+        discountsManagementRepository.allDiscounts(this.state.formValues.name, this.state.current, this.state.items)
+            .then((response:any) => {
+                this.setState({
+                    currentItems: response.data
+                })
+            });
     }
 
     paginationHandler(position: number) {
@@ -75,12 +103,12 @@ class Discounts extends Component<any, IState>{
                 current: position
             }));
 
-        discountsManagementRepository.allDiscounts(position, this.state.items)
+        discountsManagementRepository.allDiscounts(this.state.formValues.name, position, this.state.items)
             .then((response:any) => {
                 this.setState({
                     currentItems: response.data
                 })
-            })
+            });
     }
 
     paginationItemGenerator() {
@@ -92,38 +120,52 @@ class Discounts extends Component<any, IState>{
         return itemsBody;
     }
 
-    conditionalRenderingItem(element: BrandDiscount) {
-        if(this.context.isActiveUserPresent)
-            return (
-                <a className="custom-link link" href={`/item-details/${element.id}`}>
-                    <Card.Img variant="top" src={`http://localhost:8080/api/clothing/item/${element.photo}`} />
-                </a>
-            );
-        else return (
-            <a className="custom-link link" onClick={this.context.setModalSignInShow}>
-                <Card.Img variant="top" src={`http://localhost:8080/api/clothing/item/${element.photo}`} />
-            </a>
-        )
+    handleChange(event: any) {
+        event.preventDefault();
+
+        let formValues = this.state.formValues;
+        // @ts-ignore
+        formValues[event.target.name] = event.target.value.trim();
+        this.setState({
+            formValues: formValues
+        });
+    }
+
+    resetFilters() {
+        this.setState({
+            formValues: {name: ""}
+        });
     }
 
     conditionalRendering() {
-        if(this.context.isActiveUserPresent){
+        if(this.state.username !== ""){
             return (
                 <>
                     <Nav/>
-                    <Container className="mt-xl-3 mb-xl-5" style={{display: 'flex', justifyContent: 'center'}} fluid>
-                        <Row className="col-xl-2 mt-xl-5">
-                            <Col className="filter-height">
-
-                            </Col>
+                    <Container className="mt-xl-3" style={{display: 'flex', justifyContent: 'center'}} fluid>
+                        <Row className="col-xl-8">
+                            <Form onSubmit={this.resetFilters} className="justify-content-end ml-1 mt-xl-1 col-xl-6">
+                                <Form.Row className="mr-auto">
+                                    <Col className="col-xl-6">
+                                        <Form.Control name="name" type="text" placeholder="Search brand name" onChange={this.handleChange}/>
+                                    </Col>
+                                    <Col className="col-xl-1">
+                                        <Button type="submit" variant="dark">Clear</Button>
+                                    </Col>
+                                </Form.Row>
+                            </Form>
                         </Row>
-                        <Row className="col-xl-6 ml-xl-3">
+                    </Container>
+                    <Container className="mb-xl-5" style={{display: 'flex', justifyContent: 'center'}} fluid>
+                        <Row className="col-xl-8">
                             {this.state.currentItems?.map(
                                 (element:BrandDiscount, index:number) => {
                                     return (
                                         <Col className="col-xl-3">
                                             <Card className="mt-xl-5 ml-xl-1">
-                                                {this.conditionalRenderingItem(element)}
+                                                <a className="custom-link link" href={`/discount-details/${element.id}`}>
+                                                    <Card.Img variant="top" src={`http://localhost:8080/api/discounts/item/${element.photo}`} />
+                                                </a>
                                                 <Card.Footer>
                                                     <small className="text-muted">{element.discount}%</small>
                                                 </Card.Footer>
@@ -135,7 +177,6 @@ class Discounts extends Component<any, IState>{
                         </Row>
                     </Container>
                     <Container className="mt-xl-5 mb-xl-3" style={{display: 'flex', justifyContent: 'center'}} fluid>
-                        <Row className="col-xl-2 mt-xl-5"></Row>
                         <Row className="col-xl-6 mt-xl-5">
                             <Col>
                                 <Pagination style={{display: 'flex', justifyContent: 'center'}}>

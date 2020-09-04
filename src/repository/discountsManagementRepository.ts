@@ -2,8 +2,9 @@ import axios from '../custom-axios/ample-axios';
 
 class DiscountsManagementRepository {
 
-    allDiscounts(current: number, items: number) {
+    allDiscounts(name: string, current: number, items: number) {
         return axios.post("/discounts/all", {
+            "name" : name,
             "current" : current,
             "items" : items
         });

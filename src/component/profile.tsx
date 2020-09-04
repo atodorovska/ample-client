@@ -16,7 +16,8 @@ interface IState {
     type: string,
     add: boolean,
     address: string,
-    number: string
+    number: string,
+    username: string
 }
 
 class Profile extends Component<any, IState>{
@@ -31,7 +32,8 @@ class Profile extends Component<any, IState>{
             type: "",
             add: false,
             address: "",
-            number: ""
+            number: "",
+            username: ""
         }
 
         this.addProfileAddress = this.addProfileAddress.bind(this);
@@ -49,7 +51,8 @@ class Profile extends Component<any, IState>{
             .then((response: any) => {
                 this.setState({
                     address: response.data.address,
-                    number: response.data.number
+                    number: response.data.number,
+                    username: response.data.username
                 })
             });
     }
@@ -59,7 +62,8 @@ class Profile extends Component<any, IState>{
             .then((response: any) => {
                 this.setState({
                     address: response.data.address,
-                    number: response.data.number
+                    number: response.data.number,
+                    username: response.data.username
                 })
             });
     }
@@ -119,7 +123,7 @@ class Profile extends Component<any, IState>{
     }
 
     conditionalRendering()  {
-        if(this.context.isActiveUserPresent){
+        if(this.state.username !== ""){
             return (
                 <>
                     <Nav/>

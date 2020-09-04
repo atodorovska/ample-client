@@ -108,32 +108,32 @@ const ShareItem = (props:any) => {
                         <Form.Label>Category</Form.Label>
                         <Form.Control name="category" as="select" custom onChange={handleChange}>
                             <option value="0">Choose...</option>
-                            <option value="1">JACKETS</option>
-                            <option value="2">DRESSES</option>
-                            <option value="3">SHIRTS</option>
-                            <option value="4">TOPS</option>
-                            <option value="5">TROUSERS</option>
-                            <option value="6">JEANS</option>
-                            <option value="7">SHORTS</option>
-                            <option value="8">SKIRTS</option>
-                            <option value="9">SHOES</option>
-                            <option value="10">BAGS</option>
-                            <option value="11">SWIMWEAR</option>
-                            <option value="12">ACCESSORIES</option>
-                            <option value="13">SUITS</option>
-                            <option value="14">OTHER</option>
+                            <option value="JACKETS">JACKETS</option>
+                            <option value="DRESSES">DRESSES</option>
+                            <option value="SHIRTS">SHIRTS</option>
+                            <option value="TOPS">TOPS</option>
+                            <option value="TROUSERS">TROUSERS</option>
+                            <option value="JEANS">JEANS</option>
+                            <option value="SHORTS">SHORTS</option>
+                            <option value="SKIRTS">SKIRTS</option>
+                            <option value="SHOES">SHOES</option>
+                            <option value="BAGS">BAGS</option>
+                            <option value="SWIMWEAR">SWIMWEAR</option>
+                            <option value="ACCESSORIES">ACCESSORIES</option>
+                            <option value="SUITS">SUITS</option>
+                            <option value="OTHER">OTHER</option>
                         </Form.Control>
                     </Form.Group>
                     <Form.Group controlId="formBasicSize">
                         <Form.Label>Size</Form.Label>
                         <Form.Control name="size" as="select" custom onChange={handleChange}>
                             <option value="0">Choose...</option>
-                            <option value="1">XS</option>
-                            <option value="2">S</option>
-                            <option value="3">M</option>
-                            <option value="4">L</option>
-                            <option value="5">XL</option>
-                            <option value="6">OTHER</option>
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="OTHER">OTHER</option>
                         </Form.Control>
                     </Form.Group>
                     <Form.Group controlId="formBasicPrice">

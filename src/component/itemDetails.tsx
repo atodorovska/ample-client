@@ -11,11 +11,13 @@ import Image from "react-bootstrap/esm/Image";
 import ListGroup from "react-bootstrap/esm/ListGroup";
 import Button from "react-bootstrap/esm/Button";
 import GetItem from "./getItem";
+import authenticationRepository from "../repository/authenticationRepository";
 
 interface IState {
     clothingItem: ClothingItem,
     showGetItemModal: boolean,
-    showSuccessModal: boolean
+    showSuccessModal: boolean,
+    username: string
 }
 
 class ItemDetails extends Component<any, IState>{
@@ -28,7 +30,8 @@ class ItemDetails extends Component<any, IState>{
         this.state = {
             clothingItem: {} as ClothingItem,
             showGetItemModal: false,
-            showSuccessModal: false
+            showSuccessModal: false,
+            username: ""
         }
 
         this.showGetItemModal = this.showGetItemModal.bind(this);
@@ -39,6 +42,13 @@ class ItemDetails extends Component<any, IState>{
 
     componentDidMount() {
         this.context.setErrorFalse();
+
+        authenticationRepository.getActiveUser()
+            .then((response: any) => {
+                this.setState({
+                    username: response.data.username
+                })
+            })
 
         clothingManagementRepository.getClothingItemDetails(this.props.match.params.id)
             .then((response: any) => {
@@ -73,7 +83,7 @@ class ItemDetails extends Component<any, IState>{
     }
 
     conditionalRendering() {
-        if(this.context.isActiveUserPresent){
+        if(this.state.username !== ""){
             return (
                 <>
                     <Nav/>

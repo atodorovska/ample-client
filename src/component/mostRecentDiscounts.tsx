@@ -15,12 +15,12 @@ const MostRecentDiscounts = () => {
         if(context.isActiveUserPresent)
             return (
                 <a className="custom-link link" href={`/discount-details/${element.id}`}>
-                    <Card.Img variant="top" src={`http://localhost:8080/api/clothing/item/${element.photo}`} />
+                    <Card.Img variant="top" src={`http://localhost:8080/api/discounts/item/${element.photo}`} />
                 </a>
             );
         else return (
             <a className="custom-link link" onClick={context.setModalSignInShow}>
-                <Card.Img variant="top" src={`http://localhost:8080/api/clothing/item/${element.photo}`} />
+                <Card.Img variant="top" src={`http://localhost:8080/api/discounts/item/${element.photo}`} />
             </a>
         )
     }
